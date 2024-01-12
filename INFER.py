@@ -7,6 +7,14 @@ from text.symbols import symbols
 from text import text_to_sequence
 from scipy.io.wavfile import write
 
+from flask import Flask, send_file
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
 class vits():
     def __init__(self, checkpoint_path, config_path):
         self.hps = utils.get_hparams_from_file(config_path)
@@ -39,3 +47,11 @@ class vits():
         ipd.display(ipd.Audio(audio, rate=self.hps.data.sampling_rate, normalize=False))
 
 tts = vits('./wakgood-tts/G_579000.pth', './wakgood-tts/config.json')
+
+@app.route('/tts_infer')
+def tts_infer():
+    tts.infer("안녕하세요")
+    return send_file("./infer/test.wav", as_attachment=True)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=4000)
