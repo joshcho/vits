@@ -7,7 +7,7 @@ from text.symbols import symbols
 from text import text_to_sequence
 from scipy.io.wavfile import write
 
-from flask import Flask, send_file
+from flask import Flask, send_file, request
 
 app = Flask(__name__)
 
@@ -48,9 +48,11 @@ class vits():
 
 tts = vits('./wakgood-tts/G_579000.pth', './wakgood-tts/config.json')
 
-@app.route('/tts_infer')
+@app.route('/tts_infer', methods=['POST'])
 def tts_infer():
-    tts.infer("안녕하세요")
+    data = request.get_json()
+    input_string = data['input']
+    tts.infer(input_string)
     return send_file("./infer/test.wav", as_attachment=True)
 
 if __name__ == '__main__':
