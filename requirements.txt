@@ -19,3 +19,5 @@ num_thai
 opencc
 ipython
 gradio
+flask
+Flask-CORS

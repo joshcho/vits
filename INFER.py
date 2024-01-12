@@ -8,8 +8,10 @@ from text import text_to_sequence
 from scipy.io.wavfile import write
 
 from flask import Flask, send_file, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
